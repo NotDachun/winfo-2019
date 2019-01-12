@@ -1,0 +1,38 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Concussion Test</title>
+    <meta name="description" content="A convenient way to test for concussion">
+    <link rel="canonical" href="{{site.baseurl}}{{page.url}}">
+
+    <!-- css -->
+    <link href="/css/StyleReset.css" rel="stylesheet" type="text/css">
+    
+    <!-- TODO: Determine if I want to use this or not -->
+    <link href="{{site.baseurl}}/css/highlight.css" rel="stylesheet" type="text/css">
+    
+    <!-- css for phone -->
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    {% if page.title == "Post Archives" %}
+    <script src="{{site.baseurl}}/scripts/smoothScroll.js"></script>
+    {% endif %}
+    <script src="{{site.baseurl}}/scripts/headerOpenMenu.js"></script>
+    {% if page.activeLink == "home" %}
+    <script src="{{site.baseurl}}/scripts/fadeInBlogThumbnails.js"></script>
+    {% endif %}
+
+    <!-- Note to self: javascript are loaded synchronously where they are placed so they are not aware
+    of existence of anything that follows!! These scripts can be placed in header since they are called by
+    elements as opposed to itself searching for elements and calling them -->
+
+    <!-- favicon  -->
+    <link rel="shortcut icon" type="image/png" href="{{site.baseurl}}/images/faviconArrow.png"/>
+
+    <!-- fonts -->
+    <!-- handwriting for click on pencil -->
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+
+</head>
