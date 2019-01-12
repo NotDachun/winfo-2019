@@ -5,4 +5,4 @@ WINFO Hackathon 2019
 - Diagnose concussion with phone
 - 8 second Vine
 - Compliment generator
-- 
+- Song recommender based on mood
