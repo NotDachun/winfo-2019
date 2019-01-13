@@ -206,6 +206,10 @@ class WordDiscrimination(wx.Frame):
         self.Layout()
 
     def switchPanels2(self, panelName):
+        if panelName == "results":
+            self.panels["results"] = Results(self)
+            self.sizer.Add(self.panels["results"], 1, wx.EXPAND)
+            self.panels["results"].Hide()
         for name, panel in self.panels.items():
             if name != panelName:
                 panel.Hide()
@@ -217,7 +221,6 @@ allWords = []
 with open('samplewords.txt', 'r') as f:
     for line in f:
         allWords.append(line.strip())
-allWords.pop(-1)
 print(allWords)
 
 randomWords = []
