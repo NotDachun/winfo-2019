@@ -41,7 +41,27 @@ class PartOne(wx.Panel):
     def __init__(self, parent):
         super(PartOne, self).__init__(parent)
 
+        # super(Instructions, self).__init__(parent)
+
+        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
+        font.SetPointSize(20)
+
+        vbox = wx.BoxSizer(wx.VERTICAL)
+
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
         st1 = wx.StaticText(self, label="Hi")
+        st1.SetFont(font)
+        hbox1.Add(st1, wx.ALIGN_CENTER)
+        vbox.Add(hbox1, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=50)
+
+        self.SetSizer(vbox)
+
+        # for word in allWords:
+        #     print("yo")
+        #     time.sleep(0.5)
+        #     st1
+
+
 
 class PartTwo(wx.Panel):
     def __init__(self, parent):
@@ -76,6 +96,14 @@ class WordDiscrimination(wx.Frame):
                 panel.Hide()
         self.panels.get(panelName).Show()
         self.Layout()
+
+
+allWords = []
+with open('samplewords.txt', 'r') as f:
+    for line in f:
+        allWords.append(line.strip())
+
+print(allWords)
 
 
 app = wx.App()
