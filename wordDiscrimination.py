@@ -38,10 +38,8 @@ class Instructions(wx.Panel):
         self.SetSizer(vbox)
 
 class PartOne(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, words):
         super(PartOne, self).__init__(parent)
-
-        # super(Instructions, self).__init__(parent)
 
         font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
         font.SetPointSize(20)
@@ -56,27 +54,40 @@ class PartOne(wx.Panel):
 
         self.SetSizer(vbox)
 
-        # for word in allWords:
-        #     print("yo")
-        #     time.sleep(0.5)
-        #     st1
-
-
-
 class PartTwo(wx.Panel):
-    def __init__(self, parent):
+
+    def __init__(self, parent, words):
         super(PartTwo, self).__init__(parent)
+        self.words = words
+        print(words)
+        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
+        font.SetPointSize(20)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
 
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+        self.st1 = wx.StaticText(self, label=self.words.pop(-1))
+        self.st1.SetFont(font)
+        hbox2.Add(self.st1, wx.ALIGN_CENTER)
+        vbox.Add(hbox2, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=150)
+
+        vbox.Add((-1, 300))
+
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
-        btn1 = wx.Button(self, label="Yes", size=(70, 30))
+        btn1 = wx.Button(self, label="Yes", size=(150, 70))
+        btn1.Bind(wx.EVT_BUTTON, self.changeWord)
         hbox1.Add(btn1)
-        btn2 = wx.Button(self, label="No", size=(70, 30))
+        btn2 = wx.Button(self, label="No", size=(150, 70))
+        btn2.Bind(wx.EVT_BUTTON, self.changeWord)
         hbox1.Add(btn2, flag=wx.LEFT | wx.BOTTOM, border=10)
         vbox.Add(hbox1, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM)
 
         self.SetSizer(vbox)
+
+    def changeWord(self, event):
+        self.st1.SetLabel(self.words.pop(-1))
+        self.Layout()
+
 
 class WordDiscrimination(wx.Frame):
     def __init__(self, parent, title):
@@ -86,9 +97,9 @@ class WordDiscrimination(wx.Frame):
 
         self.panels = {
             "instructions": Instructions(self, "One at a time, 12 random, simple words appear for 1.5 seconds apiece. Then the same 12 words appear again for 1.5 seconds"),
-            "partOne": PartOne(self),
+            "partOne": PartOne(self, allWords),
             "instructions2": Instructions(self, "Individual words will appear one at a one. Remember if each was one of the original words by clicking 'yes' or 'no'."),
-            "partTwo": PartTwo(self)
+            "partTwo": PartTwo(self, allWords)
         }
 
         self.panels.get("partOne").Hide()
@@ -112,9 +123,7 @@ allWords = []
 with open('samplewords.txt', 'r') as f:
     for line in f:
         allWords.append(line.strip())
-
-print(allWords)
-
+print(allWords.pop())
 
 app = wx.App()
 gui = WordDiscrimination(None, title="Concussion Test: Symbol Matching")
