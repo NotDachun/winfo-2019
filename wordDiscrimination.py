@@ -31,40 +31,59 @@ class Instructions(wx.Panel):
         vbox.Add((-1, 150))
         hbox2 = wx.BoxSizer(wx.HORIZONTAL)
         btn1 = wx.Button(self, label="I Understand", size=(100, 30))
-        btn1.Bind(wx.EVT_BUTTON, partial(parent.switchPanels, panelName="partTwo"))
+        btn1.Bind(wx.EVT_BUTTON, partial(parent.switchPanels, panelName="partOne"))
+        # btn1.Bind(wx.EVT_BUTTON, PartOne.runThroughWords)
         hbox2.Add(btn1)
         vbox.Add(hbox2, flag=wx.ALIGN_BOTTOM | wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(vbox)
 
 class PartOne(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, words):
         super(PartOne, self).__init__(parent)
 
         # super(Instructions, self).__init__(parent)
 
+        self.parent = parent
         font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
         font.SetPointSize(20)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
 
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
-        st1 = wx.StaticText(self, label="Hi")
-        st1.SetFont(font)
-        hbox1.Add(st1, wx.ALIGN_CENTER)
-        vbox.Add(hbox1, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=50)
+        # self.display = "Hi"
+        self.st1 = wx.StaticText(self, label="Click Begin When Ready", size=(200, 200))
+        self.st1.SetFont(font)
+        hbox1.Add(self.st1, wx.ALIGN_CENTER)
+        vbox.Add(hbox1, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=150)
+
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+
+        btn1 = wx.Button(self, label="Begin", size=(100, 30))
+        btn1.Bind(wx.EVT_BUTTON, self.runThroughWords)
+        hbox2.Add(btn1)
+        vbox.Add(hbox2, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=150)
 
         self.SetSizer(vbox)
+        
 
-        # for word in allWords:
-        #     print("yo")
-        #     time.sleep(0.5)
-        #     st1
+        self.words = words
+
+    def runThroughWords(self, event):
+        for word in allWords:
+            print(word)
+            # self.st1.SetLabel(word)
+            self.st1.SetLabel(word)
+            self.Layout()
+            # time.sleep(0.1)
+        self.parent.panels.get("partOne").Hide()
+        self.parent.panels.get("instructions2").Show()
+
 
 
 
 class PartTwo(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, words):
         super(PartTwo, self).__init__(parent)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
@@ -86,9 +105,9 @@ class WordDiscrimination(wx.Frame):
 
         self.panels = {
             "instructions": Instructions(self, "One at a time, 12 random, simple words appear for 1.5 seconds apiece. Then the same 12 words appear again for 1.5 seconds"),
-            "partOne": PartOne(self),
+            "partOne": PartOne(self, allWords),
             "instructions2": Instructions(self, "Individual words will appear one at a one. Remember if each was one of the original words by clicking 'yes' or 'no'."),
-            "partTwo": PartTwo(self)
+            "partTwo": PartTwo(self, allWords)
         }
 
         self.panels.get("partOne").Hide()
