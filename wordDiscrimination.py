@@ -104,7 +104,7 @@ class PartOne(wx.Panel):
         for word in randomWords:
             self.st1.SetLabel(word)
             self.Layout()
-            # time.sleep(1.5)
+            time.sleep(1.5)
         self.parent.switchPanels2("instructions2")
 
 
@@ -164,6 +164,8 @@ class Results(wx.Panel):
         self.st1.SetFont(font)
         hbox1.Add(self.st1, wx.ALIGN_CENTER)
         vbox.Add(hbox1, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=150)
+
+        self.SetSizer(vbox)
 
 
 class WordDiscrimination(wx.Frame):
