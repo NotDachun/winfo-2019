@@ -7,7 +7,7 @@ LENGTH = 400
 WIDTH = 600
 
 class Instructions(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, directions):
         super(Instructions, self).__init__(parent)
 
         font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
@@ -23,7 +23,7 @@ class Instructions(wx.Panel):
 
         vbox.Add((-1, 125))
 
-        st2 = wx.StaticText(self, label="One at a time, 12 random, simple words appear for 1.5 seconds apiece. Then the same 12 words appear again for 1.5 seconds")
+        st2 = wx.StaticText(self, label=directions)
         st2.SetFont(font)
         st2.Wrap(275)
         vbox.Add(st2, flag=wx.ALIGN_CENTER | wx.ALL, border=25)
@@ -31,7 +31,7 @@ class Instructions(wx.Panel):
         vbox.Add((-1, 150))
         hbox2 = wx.BoxSizer(wx.HORIZONTAL)
         btn1 = wx.Button(self, label="I Understand", size=(100, 30))
-        btn1.Bind(wx.EVT_BUTTON, partial(parent.switchPanels, panelName="partOne"))
+        btn1.Bind(wx.EVT_BUTTON, partial(parent.switchPanels, panelName="partTwo"))
         hbox2.Add(btn1)
         vbox.Add(hbox2, flag=wx.ALIGN_BOTTOM | wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -67,8 +67,16 @@ class PartTwo(wx.Panel):
     def __init__(self, parent):
         super(PartTwo, self).__init__(parent)
 
-        st1 = wx.StaticText(self, label="Hi 2")
+        vbox = wx.BoxSizer(wx.VERTICAL)
 
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        btn1 = wx.Button(self, label="Yes", size=(70, 30))
+        hbox1.Add(btn1)
+        btn2 = wx.Button(self, label="No", size=(70, 30))
+        hbox1.Add(btn2, flag=wx.LEFT | wx.BOTTOM, border=10)
+        vbox.Add(hbox1, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM)
+
+        self.SetSizer(vbox)
 
 class WordDiscrimination(wx.Frame):
     def __init__(self, parent, title):
@@ -77,13 +85,15 @@ class WordDiscrimination(wx.Frame):
         self.Centre()
 
         self.panels = {
-            "instructions": Instructions(self),
+            "instructions": Instructions(self, "One at a time, 12 random, simple words appear for 1.5 seconds apiece. Then the same 12 words appear again for 1.5 seconds"),
             "partOne": PartOne(self),
+            "instructions2": Instructions(self, "Individual words will appear one at a one. Remember if each was one of the original words by clicking 'yes' or 'no'."),
             "partTwo": PartTwo(self)
         }
 
         self.panels.get("partOne").Hide()
         self.panels.get("partTwo").Hide()
+        self.panels.get("instructions2").Hide()
 
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         for panel in self.panels.values():
