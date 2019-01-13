@@ -5,7 +5,7 @@ import random
 
 LENGTH = 400
 WIDTH = 600
-correct = 0
+correct = [0]
 
 class Instructions(wx.Panel):
     def __init__(self, parent):
@@ -139,14 +139,18 @@ class PartTwo(wx.Panel):
 
     def changeWord(self, event):
         b = event.GetEventObject().GetLabel()
-        # if b == "Yes" and self.st1.GetLabel() in randomWords:
-        #     correct += 1
-        # elif b == "No" and not self.st1.GetLabel() in randomWords:
-        #     correct += 1
+        if b == "Yes" and self.st1.GetLabel() in randomWords:
+            correct[0] += 1
+            print("Correct")
+        elif b == "No" and not self.st1.GetLabel() in randomWords:
+            correct[0] += 1
+            print("Correct")
         if len(self.words) > 0:
             self.st1.SetLabel(self.words.pop(-1))
             self.Layout()
         else:
+            with open("numberofright.txt", 'w') as file:
+                file.write(str(correct[0]))
             self.parent.switchPanels2("results")
 
 class Results(wx.Panel):
@@ -158,8 +162,10 @@ class Results(wx.Panel):
         vbox = wx.BoxSizer(wx.VERTICAL)
 
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
-        # result = str(correct) + "/20"
-        result = "15/20"
+        result = 0
+        with open("numberofright.txt", 'r') as f:
+            result = f.read() + "/20"
+        # result = "15/20"
         self.st1 = wx.StaticText(self, label=result, size=(200, 200))
         self.st1.SetFont(font)
         hbox1.Add(self.st1, wx.ALIGN_CENTER)
@@ -220,8 +226,6 @@ while len(randomWords) < 12:
     if word not in randomWords:
         randomWords.append(word)
 print(randomWords)
-
-correct = 0
 
 app = wx.App()
 gui = WordDiscrimination(None, title="Concussion Test: Symbol Matching")
